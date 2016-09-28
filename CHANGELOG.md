@@ -1,5 +1,14 @@
 # Change Log
 
+## Patched by Egno
+- Table schema is removed from query. 
+Please, use "search_path" postgresql variable. 
+TODO: to set search_path by postgrest.
+- Add ability to order by embedded fields. 
+Example: ?select=id,position{name,id}&order=positions_position
+where: "position" is selected field, "positions" is related table
+result is ordered by "name, id" fields
+
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
