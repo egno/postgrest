@@ -287,9 +287,10 @@ requestToQuery schema isParent (DbRead (Node (Select colSelects tbls conditions 
     -- TODO! the folloing helper functions are just to remove the "schema" part when the table is "source" which is the name
     -- of our WITH query part
     mainTbl = fromMaybe nodeName (tableName . relTable <$> maybeRelation)
-    tblSchema tbl = if tbl == sourceCTEName then "" else schema
-    qi = QualifiedIdentifier (tblSchema mainTbl) mainTbl
-    toQi t = QualifiedIdentifier (tblSchema t) t
+{-    tblSchema tbl = if tbl == sourceCTEName then "" else schema -}
+    tblSchema tbl = if tbl == sourceCTEName then "" else ""
+    qi = QualifiedIdentifier (tblSchema mainTbl) mainTbl 
+    toQi t = QualifiedIdentifier (tblSchema t) t 
     query = unwords [
       "SELECT ", intercalate ", " (map (pgFmtSelectItem qi) colSelects ++ selects),
       "FROM ", intercalate ", " (map (fromQi . toQi) tbls),
@@ -306,7 +307,7 @@ requestToQuery schema isParent (DbRead (Node (Select colSelects tbls conditions 
             clause = intercalate "," (map queryTerm ts)
             queryTerm :: OrderTerm -> Text
             queryTerm t = " "
-                <> toS (pgFmtColumn qi $ otTerm t) <> " "
+                <> toS (otTerm t) <> " "
                 <> show (otDirection t) <> " "
                 <> maybe "" show (otNullOrder t) <> " "
     (joins, selects) = foldr getQueryParts ([],[]) forest
