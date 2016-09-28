@@ -427,7 +427,7 @@ limitF r  = if r == allRange
     offset = show $ rangeOffset r
 
 fromQi :: QualifiedIdentifier -> SqlFragment
-fromQi t = (if s == "" then "" else pgFmtIdent s <> ".") <> pgFmtIdent n
+fromQi t = (if s == "" then "" else "") <> pgFmtIdent n
   where
     n = qiName t
     s = qiSchema t
